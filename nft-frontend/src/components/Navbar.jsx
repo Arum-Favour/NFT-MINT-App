@@ -24,7 +24,7 @@ const CustomConnectButton = () => {
               // Custom Connect Button
               <button
                 onClick={openConnectModal}
-                className="flex items-center text-white text-sm bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] px-4 py-2 rounded-[30px] cursor-pointer"
+                className="animate-bounce flex items-center text-white text-sm bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] px-4 py-2 rounded-[30px] cursor-pointer"
               >
                 <img src={walletIcon} alt="wallet Icon" />
                 Connect Wallet
