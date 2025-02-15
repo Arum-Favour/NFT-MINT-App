@@ -22,6 +22,13 @@ app.use("/api/nfts", nftRoutes);
 
 const PORT = process.env.PORT;
 
+app.use(
+  cors({
+    origin: "https://nft-mint-app-delta.vercel.app/", // Allow frontend to communicate
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
 //MongoDB connection setup
 const connectDB = async () => {
   try {
