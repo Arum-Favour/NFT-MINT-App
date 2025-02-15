@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <div className="flex justify-center items-center w-4/5 mx-auto mt-20">
       <div className="flex flex-col justify-center items-center w-2/5 mx-auto gap-5">
-        <h1 className="text-5xl font-bold text-white text-center">
+        <h1 className="animate-pulse text-5xl font-bold text-white text-center">
           Discover & Collect Extraordinary NFTs
         </h1>
         <p className="text-[#D1D5DB] text-center mt-4">
