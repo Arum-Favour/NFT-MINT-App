@@ -1,4 +1,4 @@
-NFT-Dapp Frontend
+##NFT-Dapp Frontend
 
  Description
 This is the dynamic frontend for A FullStack NFT Minting Application which involves dynamic component rendering, NFT creation and wallet Connection Functionalities
