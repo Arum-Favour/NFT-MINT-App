@@ -93,7 +93,7 @@ const FormSection = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-4/5 mx-auto mt-20 h-auto">
+    <div className="flex justify-center items-center w-4/5 mx-auto mt-20 h-auto opacity-0 translate-y-10 animate-slide-in">
       {!mintedNft ? (
         <div className="flex justify-center flex-col w-2/5 bg-[#11182780] h-[506px] p-8 rounded-[18px] border-[#374151] border-[1px]">
           <h2 className="text-white text-2xl font-bold">Mint Your NFT</h2>
