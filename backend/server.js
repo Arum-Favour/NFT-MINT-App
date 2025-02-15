@@ -43,7 +43,7 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API documentation for NFT minting",
     },
-    servers: [{ url: "http://localhost:5000" }],
+    servers: [{ url: "https://nft-mint-app.onrender.com" }],
   },
   apis: ["./routes/*.js"], // Path to API route files
 };
