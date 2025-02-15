@@ -11,7 +11,7 @@ const NftGallery = () => {
       if (!address) return;
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/nfts/user/${address}`
+          `https://nft-mint-app.onrender.com/api/nfts/user/${address}`
         );
         setNfts(res.data);
       } catch (err) {
