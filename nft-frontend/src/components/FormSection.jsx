@@ -59,8 +59,8 @@ const FormSection = () => {
       setTokenId(newTokenId);
 
       const metadata = { ...nft, tokenId: newTokenId, walletAddress: address };
-      await axios.post("http://localhost:5000/api/nfts", metadata);
-      const metadataUrl = `http://localhost:5000/api/nfts/${newTokenId}`;
+      await axios.post("https://nft-mint-app.onrender.com/api/nfts", metadata);
+      const metadataUrl = `https://nft-mint-app.onrender.com/api/nfts/${newTokenId}`;
 
       await writeContract({
         address: contractAddress,
@@ -78,7 +78,7 @@ const FormSection = () => {
   const fetchMintedNft = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/nfts/${tokenId}`
+        `https://nft-mint-app.onrender.com/api/nfts/${tokenId}`
       );
       setMintedNft(response.data);
       setIsMinting(false);
