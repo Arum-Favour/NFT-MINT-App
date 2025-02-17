@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import NftArt from "../assets/NftArt.jpg";
 import axios from "axios";
 import { useAccount } from "wagmi";
