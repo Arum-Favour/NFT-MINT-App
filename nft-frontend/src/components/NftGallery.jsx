@@ -1,4 +1,28 @@
-return (
+import React, { useState, useEffect } from "react";
+import NftArt from "../assets/NftArt.jpg";
+import axios from "axios";
+import { useAccount } from "wagmi";
+
+const NftGallery = () => {
+  const { address } = useAccount();
+  const [nfts, setNfts] = useState([]);
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      if (!address) return;
+      try {
+        const res = await axios.get(
+          `https://nft-mint-app.onrender.com/api/nfts/user/${address}`
+        );
+        setNfts(res.data);
+      } catch (err) {
+        console.error("Error fetching NFTs:", err);
+      }
+    };
+
+    fetchNFTs();
+  }, [address]);
+
+ return (
   <div className="flex w-full sm:w-4/5 justify-center items-start flex-col mx-auto mt-10 sm:mt-20 px-4">
     <h2 className="text-lg sm:text-xl md:text-2xl text-[#FFFFFF] font-bold">
       Your NFT Gallery
@@ -33,3 +57,6 @@ return (
     </div>
   </div>
 );
+};
+
+export default NftGallery;
