@@ -1,10 +1,10 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MintIcon from "../assets/MintIcon.png";
 import CheckIcon from "../assets/CheckIcon.png";
 import ShareIcon from "../assets/ShareIcon.png";
 import axios from "axios";
-import {useAccount, useWriteContract, useReadContract } from "wagmi";
-import {useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useWriteContract, useReadContract } from "wagmi";
+import { useWaitForTransactionReceipt } from "wagmi";
 
 const contractAddress = "0x743f49311a82fe72eb474c44e78da2a6e0ae951c";
 import contractAbi from "../contractAbi.json";
@@ -17,12 +17,15 @@ const FormSection = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNft, setMintedNft] = useState(null);
 
-  const { data: exists } = useReadContract({
+  const {
+    data: exists,
+    refetch: checkTokenExists
+  } = useReadContract({
     address: contractAddress,
     abi: contractAbi,
     functionName: "checkId",
     args: tokenId ? [tokenId] : undefined,
-    enabled: !!tokenId,
+    enabled: false,
   });
 
   const {
@@ -40,8 +43,15 @@ const FormSection = () => {
     }
   }, [isTxnSuccess, isError]);
 
-  const generateUniqueTokenId = () => {
-    return Math.floor(Math.random() * 1000000);
+  const generateUniqueTokenId = async () => {
+    let newTokenId;
+    let existsCheck = true;
+    do {
+      newTokenId = Math.floor(Math.random() * 1000000);
+      const { data } = await checkTokenExists({ args: [newTokenId] });
+      existsCheck = data;
+    } while (existsCheck);
+    return newTokenId;
   };
 
   const handleMint = async () => {
@@ -52,10 +62,7 @@ const FormSection = () => {
 
     setIsMinting(true);
     try {
-      let newTokenId = generateUniqueTokenId();
-      while (exists) {
-        newTokenId = generateUniqueTokenId();
-      }
+      const newTokenId = await generateUniqueTokenId();
       setTokenId(newTokenId);
 
       const metadata = { ...nft, tokenId: newTokenId, walletAddress: address };
