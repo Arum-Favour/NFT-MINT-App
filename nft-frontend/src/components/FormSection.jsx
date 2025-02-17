@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect } from "react";
 import MintIcon from "../assets/MintIcon.png";
 import CheckIcon from "../assets/CheckIcon.png";
 import ShareIcon from "../assets/ShareIcon.png";
 import axios from "axios";
-import { useAccount, useWriteContract, useReadContract } from "wagmi";
-import { useWaitForTransactionReceipt } from "wagmi";
+import {useAccount, useWriteContract, useReadContract } from "wagmi";
+import {useWaitForTransactionReceipt } from "wagmi";
 
 const contractAddress = "0x743f49311a82fe72eb474c44e78da2a6e0ae951c";
 import contractAbi from "../contractAbi.json";
