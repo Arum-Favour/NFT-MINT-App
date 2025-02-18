@@ -35,7 +35,7 @@ const FormSection = () => {
   // Fetch all NFTs from the backend
   const fetchAllNfts = async () => {
     try {
-      const response = await axios.get("https://nft-mint-app.onrender.com/api/nfts/user/:walletAddress");
+      const response = await axios.get(`https://nft-mint-app.onrender.com/api/nfts/user/${address}`);
       setNfts(response.data);
     } catch (error) {
       console.error("Error fetching NFTs:", error);
