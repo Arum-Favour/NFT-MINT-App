@@ -88,6 +88,18 @@ const FormSection = () => {
     }
   };
 
+   const fetchMintedNft = async () => {
+    try {
+      const response = await axios.get(
+        `https://nft-mint-app.onrender.com/api/nfts/${tokenId}`
+      );
+      setMintedNft(response.data);
+      setIsMinting(false);
+    } catch (error) {
+      console.error("Error fetching minted NFT:", error);
+    }
+  };
+
   const handleMintAnother = () => {
     setMintedNft(null);
     setNft({ name: "", description: "", logoUrl: "" });
