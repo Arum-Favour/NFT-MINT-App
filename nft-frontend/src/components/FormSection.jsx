@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import MintIcon from "../assets/MintIcon.png";
 import CheckIcon from "../assets/CheckIcon.png";
 import ShareIcon from "../assets/ShareIcon.png";
@@ -16,7 +16,6 @@ const FormSection = () => {
   const [nft, setNft] = useState({ name: "", description: "", logoUrl: "" });
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNft, setMintedNft] = useState(null);
-  const [nfts, setNfts] = useState([]); // Store all NFTs
 
   const { data: exists } = useReadContract({
     address: contractAddress,
@@ -32,26 +31,14 @@ const FormSection = () => {
     isError,
   } = useWaitForTransactionReceipt({ hash });
 
-  // Fetch all NFTs from the backend
-  const fetchAllNfts = async () => {
-    try {
-      const response = await axios.get(`https://nft-mint-app.onrender.com/api/nfts/user/${address}`);
-      setNfts(response.data);
-    } catch (error) {
-      console.error("Error fetching NFTs:", error);
-    }
-  };
-
   useEffect(() => {
     if (isTxnSuccess) {
-      fetchAllNfts(); // Refresh NFT list after minting
+      fetchMintedNft();
+    }
+    if (isError) {
       setIsMinting(false);
     }
-  }, [isTxnSuccess]);
-
-  useEffect(() => {
-    fetchAllNfts(); // Load NFTs on component mount
-  }, []);
+  }, [isTxnSuccess, isError, fetchMintedNft]);
 
   const generateUniqueTokenId = () => {
     return Math.floor(Math.random() * 1000000);
@@ -88,7 +75,8 @@ const FormSection = () => {
     }
   };
 
-   const fetchMintedNft = async () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchMintedNft = async () => {
     try {
       const response = await axios.get(
         `https://nft-mint-app.onrender.com/api/nfts/${tokenId}`
