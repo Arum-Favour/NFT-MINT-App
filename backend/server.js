@@ -24,7 +24,8 @@ const PORT = process.env.PORT;
 
 app.use(
   cors({
-    origin: "https://nft-mint-app-delta.vercel.app", // Allow frontend to communicate
+    origin: "https://nft-mint-app-delta.vercel.app",
+    "https://nft-mint-app.onrender.com/api/nfts", // Allow frontend to communicate
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
