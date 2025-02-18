@@ -6,21 +6,27 @@ import { useAccount } from "wagmi";
 const NftGallery = () => {
   const { address } = useAccount();
   const [nfts, setNfts] = useState([]);
-  useEffect(() => {
-    const fetchNFTs = async () => {
-      if (!address) return;
-      try {
-        const res = await axios.get(
-          `https://nft-mint-app.onrender.com/api/nfts/user/${address}`
-        );
-        setNfts(res.data);
-      } catch (err) {
-        console.error("Error fetching NFTs:", err);
-      }
-    };
+  
+useEffect(() => {
+  const fetchNFTs = async () => {
+    if (!address) return;
+    try {
+      const res = await axios.get(
+        `https://nft-mint-app.onrender.com/api/nfts/user/${address}`
+      );
+      setNfts(res.data);
+    } catch (err) {
+      console.error("Error fetching NFTs:", err);
+    }
+  };
 
-    fetchNFTs();
-  }, [address]);
+  fetchNFTs(); // Initial fetch
+
+  const interval = setInterval(fetchNFTs, 5000); // Fetch every 5 seconds
+
+  return () => clearInterval(interval); // Cleanup on unmount
+}, [address]);
+
 
  return (
   <div className="flex w-full sm:w-4/5 justify-center items-start flex-col mx-auto mt-10 sm:mt-20 px-4">
