@@ -38,7 +38,7 @@ const FormSection = () => {
     if (isError) {
       setIsMinting(false);
     }
-  }, [isTxnSuccess, isError, fetchMintedNft]);
+  }, [isTxnSuccess, isError]);
 
   const generateUniqueTokenId = () => {
     return Math.floor(Math.random() * 1000000);
