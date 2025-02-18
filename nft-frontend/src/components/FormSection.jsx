@@ -16,16 +16,14 @@ const FormSection = () => {
   const [nft, setNft] = useState({ name: "", description: "", logoUrl: "" });
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNft, setMintedNft] = useState(null);
+  const [nfts, setNfts] = useState([]); // Store all NFTs
 
-  const {
-    data: exists,
-    refetch: checkTokenExists
-  } = useReadContract({
+  const { data: exists } = useReadContract({
     address: contractAddress,
     abi: contractAbi,
     functionName: "checkId",
     args: tokenId ? [tokenId] : undefined,
-    enabled: false,
+    enabled: !!tokenId,
   });
 
   const {
@@ -34,24 +32,29 @@ const FormSection = () => {
     isError,
   } = useWaitForTransactionReceipt({ hash });
 
+  // Fetch all NFTs from the backend
+  const fetchAllNfts = async () => {
+    try {
+      const response = await axios.get("https://nft-mint-app.onrender.com/api/nfts");
+      setNfts(response.data);
+    } catch (error) {
+      console.error("Error fetching NFTs:", error);
+    }
+  };
+
   useEffect(() => {
     if (isTxnSuccess) {
-      fetchMintedNft();
-    }
-    if (isError) {
+      fetchAllNfts(); // Refresh NFT list after minting
       setIsMinting(false);
     }
-  }, [isTxnSuccess, isError]);
+  }, [isTxnSuccess]);
 
-  const generateUniqueTokenId = async () => {
-    let newTokenId;
-    let existsCheck = true;
-    do {
-      newTokenId = Math.floor(Math.random() * 1000000);
-      const { data } = await checkTokenExists({ args: [newTokenId] });
-      existsCheck = data;
-    } while (existsCheck);
-    return newTokenId;
+  useEffect(() => {
+    fetchAllNfts(); // Load NFTs on component mount
+  }, []);
+
+  const generateUniqueTokenId = () => {
+    return Math.floor(Math.random() * 1000000);
   };
 
   const handleMint = async () => {
@@ -62,7 +65,10 @@ const FormSection = () => {
 
     setIsMinting(true);
     try {
-      const newTokenId = await generateUniqueTokenId();
+      let newTokenId = generateUniqueTokenId();
+      while (exists) {
+        newTokenId = generateUniqueTokenId();
+      }
       setTokenId(newTokenId);
 
       const metadata = { ...nft, tokenId: newTokenId, walletAddress: address };
@@ -79,18 +85,6 @@ const FormSection = () => {
       console.error("Minting failed:", error);
       alert("Minting failed. Please try again.");
       setIsMinting(false);
-    }
-  };
-
-  const fetchMintedNft = async () => {
-    try {
-      const response = await axios.get(
-        `https://nft-mint-app.onrender.com/api/nfts/${tokenId}`
-      );
-      setMintedNft(response.data);
-      setIsMinting(false);
-    } catch (error) {
-      console.error("Error fetching minted NFT:", error);
     }
   };
 
