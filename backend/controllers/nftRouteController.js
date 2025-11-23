@@ -69,3 +69,9 @@ export const getNftsByWalletAddress = async (req, res) => {
     handleErrors(res, error);
   }
 };
+
+
+function handleErrors(res, error) {
+  console.error(error);
+  return res.status(500).json({ message: "Internal server error" });
+}
